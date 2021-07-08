@@ -1,6 +1,7 @@
 import React from 'react';
 import './SearchResults.css';
-import TrackList from '../Tracklist.js';
+import TrackList from '../Tracklist/Tracklist';
+import Track from '../Track/Track';
 
 class SearchResults extends React.Component {
   render(){
