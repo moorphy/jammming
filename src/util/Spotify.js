@@ -1,7 +1,6 @@
-import SearchBar from "../Components/SearchBar/SearchBar";
-
 let accessToken;
-let userId = '';
+let userID = '';
+let playlistID = '';
 const clientId = '55f1d60c09704a8bb7a5d3128ac865fb';
 const redirect_uri = 'http://localhost:3000/';
 
@@ -50,14 +49,31 @@ const Spotify = {
                 Authorization: `Bearer ${accessToken}`
             };
             fetch(`https://api.spotify.com/v1/me`, {
-                headers: headers;
+                headers: headers
             }).then(response => {
                 return response.json();
-            }).then() jsonResponse => {
-                userId = jsonResponse.id;
-            }
-
+            }).then(jsonResponse => {
+                userID = jsonResponse.id;
+            });
+            fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+                headers: headers,
+                method:`POST`,
+                body: JSON.stringify({
+                name: playlistName
+                })
+            }).then(response => {
+                return response.json();
+            }).then(jsonResponse => {
+                playlistID = jsonResponse.id;
+            }).then(() =>{
+                fetch(`https://api.spotify.com/v1/users/${userID}}/playlists/${playlistID}/tracks`, {
+                    headers: headers,
+                    method: 'POST',
+                    body: JSON.stringify({
+                        uris: arrURI
+                    })
+                });
+            })
         }
-
     }
 export default Spotify;
